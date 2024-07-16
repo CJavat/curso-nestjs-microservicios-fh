@@ -12,8 +12,9 @@ import {
 } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
-import { CreateProductDto, PaginationDto, UpdateProductDto } from 'src/common';
+import { CreateProductDto, UpdateProductDto } from './dto';
 import { PRODUCT_SERVICE } from 'src/config';
+import { PaginationDto } from 'src/common';
 
 @Controller('products')
 export class ProductsController {

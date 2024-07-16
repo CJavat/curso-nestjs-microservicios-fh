@@ -10,10 +10,10 @@ import {
   Patch,
 } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { CreateOrderDto } from './dto';
+import { CreateOrderDto, OrderPaginationDto, StatusDto } from './dto';
 import { ORDER_SERVICE } from 'src/config';
 import { firstValueFrom } from 'rxjs';
-import { OrderPaginationDto, PaginationDto, StatusDto } from 'src/common';
+import { PaginationDto } from 'src/common';
 
 @Controller('orders')
 export class OrdersController {
