@@ -9,7 +9,7 @@ export class PaymentsService {
   private readonly stripe = new Stripe(envs.stripeSecret);
 
   async createPaymentSession(paymentSessionDto: PaymentSessionDto) {
-    const { currency, items } = paymentSessionDto;
+    const { currency, items, orderId } = paymentSessionDto;
     const lineItems = items.map((item) => {
       return {
         price_data: {
@@ -24,14 +24,15 @@ export class PaymentsService {
     });
 
     const session = await this.stripe.checkout.sessions.create({
-      //TODO: Colocar aquí el ID de mi orden
       payment_intent_data: {
-        metadata: {},
+        metadata: {
+          orderId: orderId,
+        },
       },
       line_items: lineItems,
       mode: 'payment',
-      success_url: 'http://localhost:3003/payments/success', //`${envs.frontendUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: 'http://localhost:3003/payments/cancel', //`${envs.frontendUrl}/cancel`,
+      success_url: envs.striepSuccessUrl,
+      cancel_url: envs.striepCancelUrl,
     });
 
     return session;
@@ -45,8 +46,8 @@ export class PaymentsService {
     //* Testing
     // const endpointSecret = 'whsec_2dd40fba5cbf386c76608f6350b7a264c887b0e190964373a5e0527479ca89af';
 
-    //* Real - Obtener de: https://dashboard.stripe.com/test/webhooks
-    const endpointSecret = 'whsec_zCTwnnODulodyExMW9iJy18rrsPeTuz4';
+    //* Real - Obtener de: https://dashboard.stripe.com/test/webhooks/"URL_WEBHOOK"
+    const endpointSecret = envs.stripeEndpointSecret;
 
     try {
       event = this.stripe.webhooks.constructEvent(
@@ -62,8 +63,12 @@ export class PaymentsService {
 
     switch (event.type) {
       case 'charge.succeeded':
+        const chargeSucceeded = event.data.object;
         //TODO: Llamar nuestro microservicio
-        console.log(event);
+        console.log({
+          metadata: chargeSucceeded.metadata,
+          orderId: chargeSucceeded.metadata.orderId,
+        });
         break;
 
       default:
