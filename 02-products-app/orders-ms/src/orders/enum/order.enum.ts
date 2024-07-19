@@ -4,4 +4,5 @@ export const OrderStatusList = [
   OrderStatus.CANCELLED,
   OrderStatus.DELIVERED,
   OrderStatus.PENDING,
+  OrderStatus.PAID,
 ];

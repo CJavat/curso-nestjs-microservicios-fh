@@ -17,12 +17,17 @@ async function bootstrap() {
     }),
   );
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.NATS,
-    options: {
-      servers: envs.natsServers,
+  app.connectMicroservice<MicroserviceOptions>(
+    {
+      transport: Transport.NATS,
+      options: {
+        servers: envs.natsServers,
+      },
     },
-  });
+    {
+      inheritAppConfig: true, //? Funciona para que se compartan los global pipes, guards, filters, etc.
+    },
+  );
   await app.startAllMicroservices();
 
   await app.listen(envs.port);
