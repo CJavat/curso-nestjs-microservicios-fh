@@ -1,12 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { envs } from './config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { AppModule } from './app.module';
+import { envs } from './config';
 
 async function bootstrap() {
-  const logger = new Logger('Products-MS');
-  
+  const logger = new Logger('Auth-MS');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
@@ -25,6 +24,6 @@ async function bootstrap() {
   );
 
   await app.listen();
-  logger.log(`Products Microservice running on port ${envs.port}`);
+  logger.log(`Auth-MS Running On PORT: ${envs.port} `);
 }
 bootstrap();

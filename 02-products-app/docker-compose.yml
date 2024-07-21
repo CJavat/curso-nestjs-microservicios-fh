@@ -17,6 +17,18 @@ services:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
 
+  auth-ms:
+    build: ./auth-ms
+    restart: always
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    command: yarn start:dev
+    environment:
+      - PORT=3004
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${AUTH_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+
   # Oridcts MS
   products-ms:
     build: ./products-ms
@@ -54,3 +66,21 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=orders_db
+
+  # Payments MS
+  payments-ms:
+    container_name: payments-ms
+    build: ./payments-ms
+    restart: always
+    volumes:
+      - ./payments-ms/src:/usr/src/app/src
+    command: yarn start:dev
+    ports:
+      - ${PAYMENTS_MS_PORT}:${PAYMENTS_MS_PORT}
+    environment:
+      - NATS_SERVERS=nats://nats-server:4222
+      - PORT=${PAYMENTS_MS_PORT}
+      - STRIPE_SECRET=${STRIPE_SECRET}
+      - STRIPE_SUCCESS_URL=${STRIEP_SUCCESS_URL}
+      - STRIPE_CANCEL_URL=${STRIEP_CANCEL_URL}
+      - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
