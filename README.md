@@ -1,4 +1,4 @@
-# Curso `SQL De Cero: Tu Guía Práctica Con PostgreSQL` con el profesor Fernando Herrera.
+# Curso `NestJS + Microservicios: Aplicaciones Escalables y Modulares` con el profesor Fernando Herrera.
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="300" alt="Nest Logo" /></a>
